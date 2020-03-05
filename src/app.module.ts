@@ -1,6 +1,19 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
+
+// Modules
+import { CarModule } from "./car/car.module";
+import { OwnerModule } from "./owner/owner.module";
+import { ManufacturerModule } from "./manufacturer/manufacturer.module";
+
+const MODULES = [
+  CarModule,
+  OwnerModule,
+  ManufacturerModule
+];
 
 @Module({
-  imports: [],
+  imports: [
+    ...MODULES
+  ],
 })
-export class AppModule {}
+export class AppModule { }
