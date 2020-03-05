@@ -1,0 +1,31 @@
+{
+  "name": "testpulse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --watch --debug",
+    "start:prod": "nest build && node dist/main"
+  },
+  "author": "B0ER",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/common": "~6.11.11",
+    "@nestjs/config": "~0.2.4",
+    "@nestjs/core": "~6.11.11",
+    "@nestjs/platform-express": "^6.11.11",
+    "@nestjs/typeorm": "^6.3.3",
+    "@types/luxon": "^1.21.0",
+    "luxon": "^1.22.0",
+    "mysql": "^2.18.1",
+    "reflect-metadata": "~0.1.13",
+    "rxjs": "~6.5.4",
+    "typeorm": "^0.2.24"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "~6.14.2",
+    "tslint": "^6.0.0"
+  }
+}
