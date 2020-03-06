@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 
 // Entity
 import { ManufacturerEntity } from "./manufacturer.entity";
@@ -10,8 +10,7 @@ export class CarEntity {
   @PrimaryGeneratedColumn("uuid")
   public id: string;
 
-  @OneToOne(type => ManufacturerEntity)
-  @JoinColumn()
+  @ManyToOne(type => ManufacturerEntity, manufacturer => manufacturer.cars)
   public manufacturer: ManufacturerEntity;
 
   @Column()
@@ -20,6 +19,6 @@ export class CarEntity {
   @Column()
   public firstRegistrationDate: Date;
 
-  @OneToMany(type => OwnerEntity, owner => owner.cars)
+  @ManyToOne(type => OwnerEntity, owner => owner.cars)
   public owner: OwnerEntity;
 }

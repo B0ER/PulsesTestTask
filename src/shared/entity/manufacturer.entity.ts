@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { CarEntity } from "./car.entity";
 
 
 @Entity("manufacturers")
@@ -11,4 +12,7 @@ export class ManufacturerEntity {
 
   @Column()
   public phone: string;
+
+  @OneToMany(type => CarEntity, car => car.manufacturer)
+  public cars: CarEntity[];
 }

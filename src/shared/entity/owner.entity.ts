@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 
 // Entity
 import { CarEntity } from "./car.entity";
@@ -15,6 +15,6 @@ export class OwnerEntity {
   @Column()
   public purchaseDate: string;
 
-  @ManyToOne(type => CarEntity, car => car.owner)
+  @OneToMany(type => CarEntity, car => car.owner)
   public cars: CarEntity[];
 }

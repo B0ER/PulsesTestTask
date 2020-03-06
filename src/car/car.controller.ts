@@ -1,5 +1,9 @@
-import { Controller, Get, HttpStatus, Put, Delete, Patch, Param } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Put, Delete, Patch, Param, NotFoundException, Body } from "@nestjs/common";
 import { CarService } from "./car.service";
+
+// Models
+import { CreateCarDto } from "./models/create-car.dto";
+import { UpdateCarDto } from "./models/update-car.dto";
 
 @Controller("cars")
 export class CarController {
@@ -14,12 +18,17 @@ export class CarController {
   @Get(":id")
   public async getById(@Param() id: string) {
     const result = await this.carService.getById(id);
+
+    if (!result) {
+      throw new NotFoundException();
+    }
+
     return { status: HttpStatus.OK, data: result };
   }
 
   @Put()
-  public async create() {
-    await this.carService.create({});
+  public async create(@Body() createCar: CreateCarDto) {
+    await this.carService.create(createCar);
     return { status: HttpStatus.OK };
   }
 
@@ -30,8 +39,8 @@ export class CarController {
   }
 
   @Patch()
-  public async update() {
-    await this.carService.update({});
+  public async update(@Body() updateCar: UpdateCarDto) {
+    await this.carService.update(updateCar);
     return { status: HttpStatus.OK };
   }
 }

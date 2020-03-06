@@ -14,7 +14,8 @@
       "indent": [true, "spaces", 2],
       "no-consecutive-blank-lines": [true, 2],
       "no-empty": true,
-      "eofline": true
+      "eofline": true,
+      "semicolon": true
     },
     "rulesDirectory": []
   }

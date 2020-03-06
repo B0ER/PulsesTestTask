@@ -1,5 +1,9 @@
-import { Controller, Get, HttpStatus, Put, Delete, Patch, Param } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Put, Delete, Patch, Param, Body, NotFoundException } from "@nestjs/common";
 import { OwnerService } from "./owner.service";
+
+// Models
+import { CreateOwnerDto } from "./models/create-owner.dto";
+import { UpdateOwnerDto } from "./models/update-owner.dto";
 
 
 @Controller("owners")
@@ -16,12 +20,17 @@ export class OwnerController {
   @Get(":id")
   public async getById(@Param() id: string) {
     const result = await this.ownerService.getById(id);
+
+    if (!result) {
+      throw new NotFoundException();
+    }
+
     return { status: HttpStatus.OK, data: result };
   }
 
   @Put()
-  public async create() {
-    await this.ownerService.create({});
+  public async create(@Body() createModel: CreateOwnerDto) {
+    await this.ownerService.create(createModel);
     return { status: HttpStatus.OK };
   }
 
@@ -32,8 +41,8 @@ export class OwnerController {
   }
 
   @Patch()
-  public async update() {
-    await this.ownerService.update({});
+  public async update(@Body() updateEntity: UpdateOwnerDto) {
+    await this.ownerService.update(updateEntity);
     return { status: HttpStatus.OK };
   }
 }

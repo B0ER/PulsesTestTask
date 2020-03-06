@@ -3,6 +3,8 @@ import { Repository, Equal } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { ManufacturerEntity } from "shared/entity";
+
+// Models
 import { CreateManufacturerDto } from "./models/create-manufacturer.dto";
 import { UpdateManufacturerDto } from "./models/update-manufacturer.dto";
 

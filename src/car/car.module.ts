@@ -5,13 +5,13 @@ import { CarController } from "./car.controller";
 import { CarService } from "./car.service";
 
 // Entity
-import { CarEntity } from "shared/entity";
+import { CarEntity, ManufacturerEntity, OwnerEntity } from "shared/entity";
 
 @Module(
   {
     controllers: [CarController],
     providers: [CarService],
-    imports: [TypeOrmModule.forFeature([CarEntity])]
+    imports: [TypeOrmModule.forFeature([CarEntity, ManufacturerEntity, OwnerEntity])]
   }
 )
 export class CarModule { }
