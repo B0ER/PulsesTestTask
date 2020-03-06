@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { DateTime } from "luxon";
 
 // Entity
 import { CarEntity } from "./car.entity";
@@ -13,16 +12,7 @@ export class OwnerEntity {
   @Column()
   public name: string;
 
-  @Column({
-    transformer: {
-      from(value: Date): string {
-        return DateTime.fromJSDate(value).toISODate();
-      },
-      to(value: string): Date {
-        return DateTime.fromISO(value).toJSDate();
-      }
-    }
-  })
+  @Column()
   public purchaseDate: string;
 
   @ManyToOne(type => CarEntity, car => car.owner)
