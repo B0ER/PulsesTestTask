@@ -10,7 +10,8 @@ export class CarController {
   @Get()
   public async getAll(@Res() res, @Req() req) {
     try {
-      return res.status(HttpStatus.OK).json({ message: "Some message" });
+      const result = await this.carService.getAll();
+      return res.status(HttpStatus.OK).json({ status: HttpStatus.OK, data: result });
     } catch (err) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ status: HttpStatus.INTERNAL_SERVER_ERROR });
     }
@@ -19,7 +20,8 @@ export class CarController {
   @Get(":id")
   public async getById(@Res() res, @Req() req, @Param() id: string) {
     try {
-      return res.status(HttpStatus.OK).json({ message: "Some message" });
+      const result = await this.carService.getById(id);
+      return res.status(HttpStatus.OK).json({ status: HttpStatus.OK, data: result });
     } catch (err) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ status: HttpStatus.INTERNAL_SERVER_ERROR });
     }
@@ -28,16 +30,17 @@ export class CarController {
   @Put()
   public async create(@Res() res, @Req() req) {
     try {
-      return res.status(HttpStatus.OK).json({ message: "Some message" });
+      await this.carService.create({});
+      return res.status(HttpStatus.OK).json({ status: HttpStatus.OK });
     } catch (err) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ status: HttpStatus.INTERNAL_SERVER_ERROR });
     }
   }
 
-  @Delete()
-  public async delete(@Res() res, @Req() req) {
+  @Delete(":id")
+  public async delete(@Res() res, @Req() req, @Param() id: string) {
     try {
-      return res.status(HttpStatus.OK).json({ message: "Some message" });
+      await this.carService.delete(id);
     } catch (err) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ status: HttpStatus.INTERNAL_SERVER_ERROR });
     }
@@ -46,7 +49,7 @@ export class CarController {
   @Patch()
   public async update(@Res() res, @Req() req) {
     try {
-      return res.status(HttpStatus.OK).json({ message: "Some message" });
+      await this.carService.update({});
     } catch (err) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ status: HttpStatus.INTERNAL_SERVER_ERROR });
     }
