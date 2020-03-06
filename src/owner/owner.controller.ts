@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Req, HttpStatus, Put, Delete, Patch, Param } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Put, Delete, Patch, Param } from "@nestjs/common";
 import { OwnerService } from "./owner.service";
 
 
@@ -8,31 +8,32 @@ export class OwnerController {
   constructor(private readonly ownerService: OwnerService) { }
 
   @Get()
-  public async getAll(@Res() res, @Req() req) {
+  public async getAll() {
     const result = await this.ownerService.getAll();
-    return res.status(HttpStatus.OK).json({ status: HttpStatus.OK, data: result });
+    return { status: HttpStatus.OK, data: result };
   }
 
   @Get(":id")
-  public async getById(@Res() res, @Req() req, @Param() id: string) {
+  public async getById(@Param() id: string) {
     const result = await this.ownerService.getById(id);
-    return res.status(HttpStatus.OK).json({ status: HttpStatus.OK, data: result });
+    return { status: HttpStatus.OK, data: result };
   }
 
   @Put()
-  public async create(@Res() res, @Req() req) {
+  public async create() {
     await this.ownerService.create({});
-    return res.status(HttpStatus.OK).json({ status: HttpStatus.OK });
+    return { status: HttpStatus.OK };
   }
 
   @Delete(":id")
-  public async delete(@Res() res, @Req() req, @Param() id: string) {
+  public async delete(@Param() id: string) {
     await this.ownerService.delete(id);
+    return { status: HttpStatus.OK };
   }
 
   @Patch()
-  public async update(@Res() res, @Req() req) {
+  public async update() {
     await this.ownerService.update({});
-    return res.status(HttpStatus.OK).json({ status: HttpStatus.OK });
+    return { status: HttpStatus.OK };
   }
 }
