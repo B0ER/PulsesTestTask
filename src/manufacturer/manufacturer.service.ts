@@ -3,6 +3,8 @@ import { Repository, Equal } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { ManufacturerEntity } from "shared/entity";
+import { CreateManufacturerDto } from "./models/create-manufacturer.dto";
+import { UpdateManufacturerDto } from "./models/update-manufacturer.dto";
 
 
 @Injectable()
@@ -15,10 +17,10 @@ export class ManufacturerService {
   }
 
   public getById(id: string): Promise<any> {
-    return this.manufacturerRepository.findOne({ where: { id: Equal(id) } });
+    return this.manufacturerRepository.findOne(id);
   }
 
-  public create(newOwner: any) {
+  public create(newOwner: CreateManufacturerDto) {
     return this.manufacturerRepository.save(newOwner);
   }
 
@@ -26,7 +28,7 @@ export class ManufacturerService {
     return this.manufacturerRepository.delete(id);
   }
 
-  public update(updateEntity: any): Promise<any> {
+  public update(updateEntity: UpdateManufacturerDto): Promise<any> {
     return this.manufacturerRepository.update(updateEntity.id, updateEntity);
   }
 }

@@ -1,5 +1,9 @@
-import { Controller, Get, HttpStatus, Put, Delete, Patch, Param } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Put, Delete, Patch, Param, Body, HttpException, NotFoundException } from "@nestjs/common";
 import { ManufacturerService } from "./manufacturer.service";
+
+// Models
+import { CreateManufacturerDto } from "./models/create-manufacturer.dto";
+import { UpdateManufacturerDto } from "./models/update-manufacturer.dto";
 
 
 @Controller("manufacturers")
@@ -16,12 +20,17 @@ export class ManufacturerController {
   @Get(":id")
   public async getById(@Param() id: string) {
     const result = await this.manufacturerService.getById(id);
+
+    if (!result) {
+      throw new NotFoundException();
+    }
+
     return { status: HttpStatus.OK, data: result };
   }
 
   @Put()
-  public async create() {
-    await this.manufacturerService.create({});
+  public async create(@Body() newManufacturer: CreateManufacturerDto) {
+    await this.manufacturerService.create(newManufacturer);
     return { status: HttpStatus.OK };
   }
 
@@ -32,8 +41,8 @@ export class ManufacturerController {
   }
 
   @Patch()
-  public async update() {
-    await this.manufacturerService.update({});
+  public async update(@Body() updateManufacturer: UpdateManufacturerDto) {
+    await this.manufacturerService.update(updateManufacturer);
     return { status: HttpStatus.OK };
   }
 }
