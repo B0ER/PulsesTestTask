@@ -69,9 +69,8 @@ export class CarService {
       const owner: OwnerEntity = updatedEntity.owners.id(updateModel.owner._id);
       owner.name = updateModel.owner.name;
       owner.purchaseDate = updateModel.owner.purchaseDate;
-      updatedEntity.owners.push(owner as OwnerEntity);
     }
 
-    await this.carsRepository.update({ _id: updatedEntity.id }, updatedEntity).exec();
+    await this.carsRepository.updateOne({ _id: updatedEntity.id }, updatedEntity).exec();
   }
 }

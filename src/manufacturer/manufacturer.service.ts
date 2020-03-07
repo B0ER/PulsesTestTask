@@ -32,6 +32,6 @@ export class ManufacturerService {
   }
 
   public async update(updateEntity: UpdateManufacturerDto): Promise<void> {
-    await this.manufacturerRepository.update({ _id: new ObjectId(updateEntity._id) }, updateEntity).exec();
+    await this.manufacturerRepository.updateOne({ _id: new ObjectId(updateEntity._id) }, updateEntity).exec();
   }
 }
