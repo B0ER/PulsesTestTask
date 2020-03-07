@@ -1,57 +1,54 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-
-import { CarEntity, ManufacturerEntity, OwnerEntity } from "shared/entity";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 
 // Models
 import { CreateCarDto } from "./models/create-car.dto";
 import { UpdateCarDto } from "./models/update-car.dto";
+import { CarEntity, ManufacturerEntity, OwnerEntity } from "shared/entity";
+import { ObjectId } from "mongodb";
 
 
 @Injectable()
 export class CarService {
   constructor(
-    @InjectRepository(CarEntity) private readonly carsRepository: Repository<CarEntity>,
-    @InjectRepository(ManufacturerEntity) private readonly manufacturerRepository: Repository<ManufacturerEntity>,
-    @InjectRepository(OwnerEntity) private readonly ownerRepository: Repository<OwnerEntity>
+    @InjectModel("cars") private readonly carsRepository: Model<CarEntity>,
+    @InjectModel("manufacturers") private readonly manufacturerRepository: Model<ManufacturerEntity>,
+    @InjectModel("owners") private readonly ownerRepository: Model<OwnerEntity>
   ) {
 
   }
 
-  public async getAll(): Promise<any[]> {
-    return this.carsRepository.find();
+  public getAll(): Promise<CarEntity[]> {
+    return this.carsRepository.find().exec();
   }
 
-  public getById(id: string): Promise<any> {
-    return this.carsRepository.findOne(id);
+  public getById(id: string): Promise<CarEntity | null> {
+    return this.carsRepository.findOne({ _id: new ObjectId(id) }).exec();
   }
 
-  public async create(newCar: CreateCarDto) {
-    const manufacturer = await this.manufacturerRepository.findOne(newCar.manufacturerId);
+  public async create(newCar: CreateCarDto): Promise<CarEntity> {
+    const manufacturer: ManufacturerEntity | null = await this.manufacturerRepository.findOne({ _id: new ObjectId(newCar.manufacturerId) }).exec();
 
     if (!manufacturer) {
-      throw new NotFoundException();
+      throw new NotFoundException("Manufacturer not found");
     }
 
-    const owner = await this.ownerRepository.findOne(newCar.ownerId);
-    if (!owner) {
-      throw new NotFoundException();
-    }
+    const newCarEntity: CarEntity = new this.carsRepository(newCar);
+    newCarEntity.manufacturerId = manufacturer._id;
 
-    const newCarEntity: CarEntity = Object.assign(newCar);
-    newCarEntity.manufacturer = manufacturer;
-    newCarEntity.owner = owner;
+    const owner: OwnerEntity = new this.ownerRepository(newCar.owner);
+    newCarEntity.owners.push(owner);
 
-    return this.carsRepository.save(newCarEntity);
+    return newCarEntity.save();
   }
 
-  public delete(id: string): Promise<any> {
-    return this.carsRepository.delete(id);
+  public async delete(id: string): Promise<void> {
+    await this.carsRepository.deleteOne({ _id: new ObjectId(id) }).exec();
   }
 
-  public async update(updateModel: UpdateCarDto): Promise<any> {
-    const updatedEntity = await this.carsRepository.findOne(updateModel.id);
+  public async update(updateModel: UpdateCarDto): Promise<void> {
+    const updatedEntity: CarEntity | null = await this.carsRepository.findOne({ _id: new ObjectId(updateModel._id) });
 
     if (!updatedEntity) {
       throw new NotFoundException();
@@ -61,15 +58,20 @@ export class CarService {
     updatedEntity.firstRegistrationDate = updateModel.firstRegistrationDate;
 
     if (updateModel.manufacturerId) {
-      const manufacturer = await this.manufacturerRepository.findOne(updateModel.manufacturerId);
-      updatedEntity.manufacturer = manufacturer as ManufacturerEntity;
+      const manufacturer: ManufacturerEntity | null = await this.manufacturerRepository.findOne({ _id: new ObjectId(updateModel.manufacturerId) });
+      if (!manufacturer) {
+        throw new NotFoundException("Manufacturer not found");
+      }
+      updatedEntity.manufacturerId = manufacturer!.id;
     }
 
-    if (updateModel.ownerId) {
-      const owner = await this.ownerRepository.findOne(updateModel.ownerId);
-      updatedEntity.owner = owner as OwnerEntity;
+    if (updateModel.owner && updateModel.owner._id) {
+      const owner: OwnerEntity = updatedEntity.owners.id(updateModel.owner._id);
+      owner.name = updateModel.owner.name;
+      owner.purchaseDate = updateModel.owner.purchaseDate;
+      updatedEntity.owners.push(owner as OwnerEntity);
     }
 
-    return this.carsRepository.update(updatedEntity.id, updatedEntity);
+    await this.carsRepository.update({ _id: updatedEntity.id }, updatedEntity).exec();
   }
 }

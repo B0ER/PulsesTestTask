@@ -1,20 +1,22 @@
-import { IsDateString, IsUUID, IsNotEmpty, IsNumber } from "class-validator";
+import { IsDateString, IsNotEmpty, IsNumber, ValidateNested, IsMongoId } from "class-validator";
+
+import { CreateOwnerDto } from "./create-owner.dto";
 
 
 export class CreateCarDto {
   @IsNotEmpty()
-  @IsUUID()
-  public manufacturerId: string;
+  @IsMongoId()
+  public readonly manufacturerId: string;
 
   @IsNotEmpty()
-  @IsUUID()
-  public ownerId: string;
+  @ValidateNested()
+  public readonly owner: CreateOwnerDto;
 
   @IsNotEmpty()
   @IsNumber()
-  public price: number;
+  public readonly price: number;
 
   @IsNotEmpty()
   @IsDateString()
-  public firstRegistrationDate: Date;
+  public readonly firstRegistrationDate: Date;
 }

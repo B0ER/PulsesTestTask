@@ -15,7 +15,8 @@
       "no-consecutive-blank-lines": [true, 2],
       "no-empty": true,
       "eofline": true,
-      "semicolon": true
+      "semicolon": true,
+      "max-classes-per-file": false
     },
     "rulesDirectory": []
   }

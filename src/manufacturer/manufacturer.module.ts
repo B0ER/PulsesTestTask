@@ -1,15 +1,15 @@
 import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { MongooseModule } from "@nestjs/mongoose";
 
 import { ManufacturerController } from "./manufacturer.controller";
 import { ManufacturerService } from "./manufacturer.service";
-import { ManufacturerEntity, CarEntity, OwnerEntity } from "shared/entity";
+import { CarCollection, ManufacturerCollection, OwnerCollection } from "shared/schema";
 
 @Module(
   {
     controllers: [ManufacturerController],
     providers: [ManufacturerService],
-    imports: [TypeOrmModule.forFeature([ManufacturerEntity, CarEntity, OwnerEntity])]
+    imports: [MongooseModule.forFeature([CarCollection, ManufacturerCollection, OwnerCollection])]
   }
 )
 export class ManufacturerModule { }

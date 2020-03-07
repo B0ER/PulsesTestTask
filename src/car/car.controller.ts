@@ -16,7 +16,7 @@ export class CarController {
   }
 
   @Get(":id")
-  public async getById(@Param() id: string) {
+  public async getById(@Param("id") id: string) {
     const result = await this.carService.getById(id);
 
     if (!result) {
@@ -33,7 +33,7 @@ export class CarController {
   }
 
   @Delete(":id")
-  public async delete(@Param() id: string) {
+  public async delete(@Param("id") id: string) {
     await this.carService.delete(id);
     return { status: HttpStatus.OK };
   }

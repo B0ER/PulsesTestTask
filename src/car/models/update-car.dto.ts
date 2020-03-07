@@ -1,24 +1,26 @@
-import { IsNotEmpty, IsUUID, IsNumber, IsDateString, IsOptional } from "class-validator";
+import { IsNotEmpty, IsNumber, IsDateString, IsOptional, IsMongoId, ValidateNested } from "class-validator";
+
+import { UpdateOwnerDto } from "./update-owner.dto";
 
 
 export class UpdateCarDto {
   @IsNotEmpty()
-  @IsUUID()
-  public id: string;
+  @IsMongoId()
+  public readonly _id: string;
 
   @IsOptional()
-  @IsUUID()
-  public manufacturerId: string;
+  @IsMongoId()
+  public readonly manufacturerId: string;
 
+  @ValidateNested()
   @IsOptional()
-  @IsUUID()
-  public ownerId: string;
+  public readonly owner: UpdateOwnerDto;
 
   @IsOptional()
   @IsNumber()
-  public price: number;
+  public readonly price: number;
 
   @IsOptional()
   @IsDateString()
-  public firstRegistrationDate: Date;
+  public readonly firstRegistrationDate: Date;
 }

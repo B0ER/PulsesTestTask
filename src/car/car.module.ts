@@ -1,17 +1,15 @@
 import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { MongooseModule } from "@nestjs/mongoose";
 
 import { CarController } from "./car.controller";
 import { CarService } from "./car.service";
-
-// Entity
-import { CarEntity, ManufacturerEntity, OwnerEntity } from "shared/entity";
+import { CarCollection, OwnerCollection, ManufacturerCollection } from "shared/schema";
 
 @Module(
   {
     controllers: [CarController],
     providers: [CarService],
-    imports: [TypeOrmModule.forFeature([CarEntity, ManufacturerEntity, OwnerEntity])]
+    imports: [MongooseModule.forFeature([CarCollection, ManufacturerCollection, OwnerCollection])]
   }
 )
 export class CarModule { }

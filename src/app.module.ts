@@ -1,17 +1,15 @@
 import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
 
 // Modules
 import { CarModule } from "./car/car.module";
-import { OwnerModule } from "./owner/owner.module";
 import { ManufacturerModule } from "./manufacturer/manufacturer.module";
+import { MongooseModule } from "@nestjs/mongoose";
 
 @Module({
   imports: [
     CarModule,
-    OwnerModule,
     ManufacturerModule,
-    TypeOrmModule.forRoot(),
+    MongooseModule.forRoot("mongodb://localhost/testpulse"),
   ],
 })
 export class AppModule { }

@@ -4,9 +4,9 @@ export class CreateManufacturerDto {
 
   @IsNotEmpty()
   @IsString()
-  public name: string;
+  public readonly name: string;
 
   @IsNotEmpty()
   @IsPhoneNumber("UA")
-  public phone: string;
+  public readonly phone: string;
 }

@@ -1,18 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { CarEntity } from "./car.entity";
+import { Document } from "mongoose";
 
-
-@Entity("manufacturers")
-export class ManufacturerEntity {
-  @PrimaryGeneratedColumn("uuid")
-  public id: string;
-
-  @Column()
-  public name: string;
-
-  @Column()
-  public phone: string;
-
-  @OneToMany(type => CarEntity, car => car.manufacturer)
-  public cars: CarEntity[];
+export interface ManufacturerEntity extends Document {
+  name: string;
+  phone: string;
 }

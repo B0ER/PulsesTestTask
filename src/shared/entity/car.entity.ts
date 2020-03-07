@@ -1,24 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Document, Types } from "mongoose";
 
-// Entity
-import { ManufacturerEntity } from "./manufacturer.entity";
 import { OwnerEntity } from "./owner.entity";
 
-
-@Entity("cars")
-export class CarEntity {
-  @PrimaryGeneratedColumn("uuid")
-  public id: string;
-
-  @ManyToOne(type => ManufacturerEntity, manufacturer => manufacturer.cars)
-  public manufacturer: ManufacturerEntity;
-
-  @Column()
-  public price: number;
-
-  @Column()
-  public firstRegistrationDate: Date;
-
-  @ManyToOne(type => OwnerEntity, owner => owner.cars)
-  public owner: OwnerEntity;
+export interface CarEntity extends Document {
+  name: string;
+  manufacturerId: string;
+  price: number;
+  firstRegistrationDate: Date;
+  owners: Types.DocumentArray<OwnerEntity>;
 }

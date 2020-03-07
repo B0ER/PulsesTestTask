@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Put, Delete, Patch, Param, Body, HttpException, NotFoundException } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Put, Delete, Patch, Param, Body, NotFoundException } from "@nestjs/common";
 import { ManufacturerService } from "./manufacturer.service";
 
 // Models
@@ -18,7 +18,7 @@ export class ManufacturerController {
   }
 
   @Get(":id")
-  public async getById(@Param() id: string) {
+  public async getById(@Param("id") id: string) {
     const result = await this.manufacturerService.getById(id);
 
     if (!result) {
@@ -35,7 +35,7 @@ export class ManufacturerController {
   }
 
   @Delete(":id")
-  public async delete(@Param() id: string) {
+  public async delete(@Param("id") id: string) {
     await this.manufacturerService.delete(id);
     return { status: HttpStatus.OK };
   }

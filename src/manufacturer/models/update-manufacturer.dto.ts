@@ -1,16 +1,16 @@
-import { IsNotEmpty, IsString, IsPhoneNumber, IsUUID } from "class-validator";
+import { IsNotEmpty, IsString, IsPhoneNumber, IsUUID, IsMongoId } from "class-validator";
 
 export class UpdateManufacturerDto {
 
   @IsNotEmpty()
-  @IsUUID()
-  public id: string;
+  @IsMongoId()
+  public readonly _id: string;
 
   @IsNotEmpty()
   @IsString()
-  public name: string;
+  public readonly name: string;
 
   @IsNotEmpty()
   @IsPhoneNumber("UA")
-  public phone: string;
+  public readonly phone: string;
 }
