@@ -10,7 +10,7 @@ export class CreateCarDto {
 
   @IsNotEmpty()
   @ValidateNested()
-  public readonly owner: CreateOwnerDto;
+  public readonly owners: CreateOwnerDto[];
 
   @IsNotEmpty()
   @IsNumber()

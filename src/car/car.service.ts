@@ -37,9 +37,6 @@ export class CarService {
     const newCarEntity: CarEntity = new this.carsRepository(newCar);
     newCarEntity.manufacturerId = manufacturer._id;
 
-    const owner: OwnerEntity = new this.ownerRepository(newCar.owner);
-    newCarEntity.owners.push(owner);
-
     return newCarEntity.save();
   }
 
@@ -65,10 +62,12 @@ export class CarService {
       updatedEntity.manufacturerId = manufacturer!.id;
     }
 
-    if (updateModel.owner && updateModel.owner._id) {
-      const owner: OwnerEntity = updatedEntity.owners.id(updateModel.owner._id);
-      owner.name = updateModel.owner.name;
-      owner.purchaseDate = updateModel.owner.purchaseDate;
+    if (updateModel.owners && updateModel.owners.length) {
+      for (const owner of updateModel.owners) {
+        const ownerEntity: OwnerEntity = updatedEntity.owners.id(owner._id);
+        ownerEntity.name = owner.name;
+        ownerEntity.purchaseDate = owner.purchaseDate;
+      }
     }
 
     await this.carsRepository.updateOne({ _id: updatedEntity.id }, updatedEntity).exec();

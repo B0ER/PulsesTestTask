@@ -14,7 +14,7 @@ export class UpdateCarDto {
 
   @ValidateNested()
   @IsOptional()
-  public readonly owner: UpdateOwnerDto;
+  public readonly owners: UpdateOwnerDto[];
 
   @IsOptional()
   @IsNumber()

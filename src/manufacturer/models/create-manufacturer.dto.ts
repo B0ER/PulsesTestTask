@@ -7,6 +7,6 @@ export class CreateManufacturerDto {
   public readonly name: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber("UA")
+  @IsPhoneNumber("ZZ")
   public readonly phone: string;
 }
