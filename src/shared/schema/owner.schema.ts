@@ -1,8 +1,8 @@
 import * as mongoose from "mongoose";
 
-export const OwnerEntity = new mongoose.Schema({
+export const OwnerSchema = new mongoose.Schema({
   name: String,
   purchaseDate: String,
 });
 
-export const OwnerCollection = { name: "owners", schema: OwnerEntity };
+export const OwnerCollection = { name: "owners", schema: OwnerSchema };

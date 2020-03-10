@@ -1,14 +1,14 @@
 import * as mongoose from "mongoose";
 
 // Entity
-import { OwnerEntity } from "./owner.schema";
+import { OwnerSchema } from "./owner.schema";
 
-export const CarEntity = new mongoose.Schema({
+export const CarSchema = new mongoose.Schema({
   name: String,
-  manufacturerId: String,
+  manufacturerId: {type: String, ref: "manufacturers"},
   price: Number,
   firstRegistrationDate: Date,
-  owners: [OwnerEntity]
+  owners: [OwnerSchema]
 });
 
-export const CarCollection = { name: "cars", schema: CarEntity };
+export const CarCollection = { name: "cars", schema: CarSchema };
