@@ -13,7 +13,7 @@ import { SchedulerModule } from "scheduler/scheduler.module";
     ManufacturerModule,
     SchedulerModule,
     ScheduleModule.forRoot(),
-    MongooseModule.forRoot("mongodb://localhost/testpulse"),
+    MongooseModule.forRoot("mongodb://localhost/testpulse", { useNewUrlParser: true }),
   ],
 })
 export class AppModule { }
