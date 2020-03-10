@@ -17,8 +17,26 @@ export class DiscountScheduler {
   // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   @Cron("*/5 * * * * *")
   public async handleCron() {
-    const now = DateTime.utc();
-    const owners: OwnerEntity[] = await this.carsRepository.aggregate([
+    const discountCars: CarEntity[] = await this.carsRepository.aggregate([
+      { $addFields: { month: { $month: "$firstRegistrationDate" } } },
+      {
+        $match: {
+          month: {
+            $gte: 5,
+            $lte: 8
+          }
+        }
+      },
+      { $project: { cars: 1 } }
+    ]).exec();
+
+    if (!discountCars || discountCars.length < 1) {
+      this.logger.log("discount cars empty");
+      return;
+    }
+
+
+    const discountOwners: OwnerEntity[] = await this.carsRepository.aggregate([
       { $unwind: "$owners" },
       {
         $replaceRoot: {
@@ -37,13 +55,17 @@ export class DiscountScheduler {
       {
         $match: {
           purchaseDat: {
-            $lt: now.toJSDate(),
-            $gt: now.minus({ months: 10 }).toJSDate()
+            $lt: DateTime.utc().minus({ months: 10 }).toJSDate()
           }
         }
       },
       { $project: { purchaseDat: 0 } }
     ]).exec();
-    this.logger.log(JSON.stringify(owners));
+    if (!discountOwners || discountOwners.length < 1) {
+      this.logger.log("discount owners empty");
+      return;
+    }
+
+
   }
 }
